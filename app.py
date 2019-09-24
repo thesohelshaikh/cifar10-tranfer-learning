@@ -26,7 +26,7 @@ app = Flask(__name__)
 def get_model():
 	global model
 	model = load_model('./model/cifar10_ResNet20v1_model.h5')
-	model._make_predict_function()
+	model._make_predict_function() # It gives TensorFlow error if this is omitted.
 	print('Model Loaded!')
 
 def preprocess_image(image, target_size):
@@ -40,21 +40,22 @@ def preprocess_image(image, target_size):
 	c = np.zeros(32*32*3).reshape((1,32,32,3))
 	c[0] = img
 	return c
-	# image = np.expand_dims(image, axis=0)
-	# return image
 
 print('Loading model..............') 
 get_model()
 
+# Prediction route
 @app.route('/predict', methods=['POST'])
 def predict():
 	message = request.get_json(force=True)
 	encoded = message['image']
 	decoded = base64.b64decode(encoded)
 	image = Image.open(io.BytesIO(decoded))
-	processed_image = preprocess_image(image, target_size=(32,32))
 
-	prediction = model.predict(processed_image).tolist()
+	# Enter the dimension of the image accepted ny your model
+	processed_image = preprocess_image(image, target_size=(32,32)) 
+
+	prediction = model.predict(processed_image)
 
 	cifar10_labels = np.array([
     'airplane',
@@ -76,14 +77,17 @@ def predict():
 			bestclass = n
 	
 	predicted_class = cifar10_labels[bestclass]
-	print(prediction)
-	print(predicted_class)
+
+	# print(prediction)
+	# print(predicted_class)
+
 	response = {
 		'predicted_class' : predicted_class
 	}
 
 	return jsonify(response)
 
+# Default app route
 @app.route('/')
 def hello():
 	return "Hello, world!"

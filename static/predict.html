@@ -32,6 +32,7 @@
         <div class="container px-lg-5" id="input-form">
             <div class="row">
                 <div class="col-sm-6 px-lg-5">
+                    <!-- Image file input -->
                     <div class="custom-file">
                         <label class="custom-file-label" for="validatedCustomFile">Select an image file to start
                             prediction...</label>
@@ -45,6 +46,7 @@
                 </div>
             </div>
             <div class="row">
+                <!-- Displaying selected image by user -->
                 <div class="col py-3 px-lg-5">
                     <figure class="figure">
                         <figcaption class="figure-caption">Selected image</figcaption>
@@ -52,36 +54,38 @@
                             width="200px">
                     </figure>
                 </div>
+                <!-- Prediction will be displayed here -->
                 <div class="col py-3 px-lg-5">
                     Predicted class:<p id="prediction" class="display-1"></p>
                 </div>
 
             </div>
         </div>
-        
+
         <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script>
+            // To diplay the image selected by user
             $("#image-selector").change(function () {
                 let reader = new FileReader();
                 reader.onload = function (e) {
                     let dataURL = reader.result;
                     $('#selected-image').attr("src", dataURL);
                     base64Image = dataURL.replace("data:image/png;base64,", "");
-                    console.log(base64Image);
+                    // console.log(base64Image);
                 }
                 reader.readAsDataURL($("#image-selector")[0].files[0])
             });
 
-
+            // Sends post request to the backend with image as input
             $("#predict-button").click(function (event) {
                 let message = {
                     image: base64Image
                 }
-                // console.log(message)
 
+                // Display the response recieved from thee backend
                 $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
                     $("#prediction").text(response.predicted_class);
-                    console.log(response);
+                    // console.log(response);
                 });
             });
         </script>
