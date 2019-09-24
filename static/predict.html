@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Predict</title>
+</head>
+<style>
+    body {
+        background-color: aliceblue;
+    }
+
+    #input-form {
+        /* border: 1 px solid; */
+        /* background-color: aliceblue; */
+    }
+
+    .row {
+        background-color: azure;
+        border: 5px dashed grey;
+    }
+
+    .border {
+        padding: 50px;
+        border-right: 1px solid black;
+    }
+</style>
+
+<body class="container">
+
+    <h1 class="py-5">Cifar-10 Image Classifier using Tranfer Learning</h1>
+    <hr>
+
+    <!-- <input id="image-selector" type="file"><br> -->
+
+    <div class="container" id="input-form">
+        <div class="row">
+            <div class="col border">
+                <!-- <div class="form-group">
+                    <label for="image-selector">Upload an image</label>
+                    <input type="file" class="form-control-file" id="image-selector">
+                </div> -->
+                <div class="custom-file">
+                    <label class="custom-file-label" for="validatedCustomFile">Choose image file...</label>
+                    <input type="file" id="image-selector" class="custom-file-input" id="validatedCustomFile" required>
+                    <!-- <div class="invalid-feedback">Example invalid custom file feedback</div> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col border">
+                <figure class="figure">
+                    <figcaption class="figure-caption">Selected image</figcaption>
+                    <img id="selected-image" src="" class="figure-img img-fluid rounded" alt="" height="500px"
+                        width="500px">
+                </figure>
+                <!-- <label for="selected-image">Your selected image</label>
+                <img id="selected-image" src="" alt="" height="500px" width="500px"><br> -->
+            </div>
+            <div class="col border">
+                <button id="predict-button" class="btn btn-primary">Predict</button><br>
+
+                Predicted class:<p id="prediction"></p>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#image-selector").change(function () {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let dataURL = reader.result;
+                $('#selected-image').attr("src", dataURL);
+                base64Image = dataURL.replace("data:image/png;base64,", "");
+                console.log(base64Image);
+            }
+            reader.readAsDataURL($("#image-selector")[0].files[0])
+        });
+
+
+        $("#predict-button").click(function (event) {
+            let message = {
+                image: base64Image
+            }
+            // console.log(message)
+
+            $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
+                $("#prediction").text(response.predicted_class);
+                console.log(response);
+            });
+        });
+    </script>
+</body>
+
+</html>
