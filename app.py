@@ -86,7 +86,7 @@ def predict():
 
 @app.route('/')
 def hello():
-	return "Hello"
+	return "Hello, world!"
 
 @app.route('/hello', methods = ['POST'])
 def hi():

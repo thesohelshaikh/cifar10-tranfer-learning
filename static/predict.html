@@ -10,95 +10,81 @@
 
     <title>Predict</title>
 </head>
-<style>
-    body {
-        background-color: aliceblue;
-    }
 
-    #input-form {
-        /* border: 1 px solid; */
-        /* background-color: aliceblue; */
-    }
+<body class="d-flex flex-column h-100">
 
-    .row {
-        background-color: azure;
-        border: 5px dashed grey;
-    }
+    <main role="main">
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="h1">Cifar-10 Image Classifier using Transfer Learning</h1>
+                <hr>
+                <p>This demo uses <strong>Resnet20v1</strong>. You can read more about it <a
+                        href="https://keras.io/examples/cifar10_resnet/">here.</a> Also this can be base repository for
+                    deploying any model as a web service.</p>
+                <p>You can learn how to create flask app to deploy a model as a web service from <a
+                        href="https://youtu.be/SI1hVGvbbZ4">here.</a></p>
+                <p><a class="btn btn-primary" href="https://www.cs.toronto.edu/~kriz/cifar.html" role="button">Learn
+                        more &raquo;</a></p>
+            </div>
+        </div>
 
-    .border {
-        padding: 50px;
-        border-right: 1px solid black;
-    }
-</style>
+        <div class="container px-lg-5" id="input-form">
+            <div class="row">
+                <div class="col-sm-6 px-lg-5">
+                    <div class="custom-file">
+                        <label class="custom-file-label" for="validatedCustomFile">Select an image file to start
+                            prediction...</label>
+                        <input type="file" id="image-selector" class="custom-file-input" id="validatedCustomFile"
+                            required>
+                    </div>
+                </div>
+                <div class="col px-lg-5">
+                    <button id="predict-button" class="btn btn-success btn-lg">Predict</button><br>
 
-<body class="container">
-
-    <h1 class="py-5">Cifar-10 Image Classifier using Tranfer Learning</h1>
-    <hr>
-
-    <!-- <input id="image-selector" type="file"><br> -->
-
-    <div class="container" id="input-form">
-        <div class="row">
-            <div class="col border">
-                <!-- <div class="form-group">
-                    <label for="image-selector">Upload an image</label>
-                    <input type="file" class="form-control-file" id="image-selector">
-                </div> -->
-                <div class="custom-file">
-                    <label class="custom-file-label" for="validatedCustomFile">Choose image file...</label>
-                    <input type="file" id="image-selector" class="custom-file-input" id="validatedCustomFile" required>
-                    <!-- <div class="invalid-feedback">Example invalid custom file feedback</div> -->
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col border">
-                <figure class="figure">
-                    <figcaption class="figure-caption">Selected image</figcaption>
-                    <img id="selected-image" src="" class="figure-img img-fluid rounded" alt="" height="500px"
-                        width="500px">
-                </figure>
-                <!-- <label for="selected-image">Your selected image</label>
-                <img id="selected-image" src="" alt="" height="500px" width="500px"><br> -->
-            </div>
-            <div class="col border">
-                <button id="predict-button" class="btn btn-primary">Predict</button><br>
-
-                Predicted class:<p id="prediction"></p>
+            <div class="row">
+                <div class="col py-3 px-lg-5">
+                    <figure class="figure">
+                        <figcaption class="figure-caption">Selected image</figcaption>
+                        <img id="selected-image" src="" class="figure-img img-fluid rounded" alt="" height="200px"
+                            width="200px">
+                    </figure>
+                </div>
+                <div class="col py-3 px-lg-5">
+                    Predicted class:<p id="prediction" class="display-1"></p>
+                </div>
 
             </div>
         </div>
-    </div>
-
-
-
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
-        $("#image-selector").change(function () {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                let dataURL = reader.result;
-                $('#selected-image').attr("src", dataURL);
-                base64Image = dataURL.replace("data:image/png;base64,", "");
-                console.log(base64Image);
-            }
-            reader.readAsDataURL($("#image-selector")[0].files[0])
-        });
-
-
-        $("#predict-button").click(function (event) {
-            let message = {
-                image: base64Image
-            }
-            // console.log(message)
-
-            $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
-                $("#prediction").text(response.predicted_class);
-                console.log(response);
+        
+        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+            $("#image-selector").change(function () {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let dataURL = reader.result;
+                    $('#selected-image').attr("src", dataURL);
+                    base64Image = dataURL.replace("data:image/png;base64,", "");
+                    console.log(base64Image);
+                }
+                reader.readAsDataURL($("#image-selector")[0].files[0])
             });
-        });
-    </script>
+
+
+            $("#predict-button").click(function (event) {
+                let message = {
+                    image: base64Image
+                }
+                // console.log(message)
+
+                $.post("http://127.0.0.1:5000/predict", JSON.stringify(message), function (response) {
+                    $("#prediction").text(response.predicted_class);
+                    console.log(response);
+                });
+            });
+        </script>
 </body>
 
 </html>
