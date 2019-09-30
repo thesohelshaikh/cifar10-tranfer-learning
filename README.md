@@ -17,4 +17,4 @@ python app.py
 ```
 
 ## Screenshot
-![screenshot png](https://user-images.githubusercontent.com/26832180/65849552-b1c39680-e368-11e9-98fd-facce47ab1f8.jpg)
+![image](https://user-images.githubusercontent.com/26832180/65849816-bccaf680-e369-11e9-845c-418d75cd6125.png)
