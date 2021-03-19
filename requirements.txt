@@ -18,7 +18,7 @@ MarkupSafe==1.1.1
 mkl-service==2.3.0
 mock==3.0.5
 numpy==1.17.2
-Pillow==6.2.0
+Pillow==8.1.1
 protobuf==3.9.2
 pygpu==0.7.6
 pyreadline==2.1
