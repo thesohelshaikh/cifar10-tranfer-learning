@@ -22,7 +22,7 @@ Pillow==8.1.1
 protobuf==3.9.2
 pygpu==0.7.6
 pyreadline==2.1
-PyYAML==5.1.2
+PyYAML==5.4
 scipy==1.1.0
 six==1.12.0
 tensorboard==1.13.1
