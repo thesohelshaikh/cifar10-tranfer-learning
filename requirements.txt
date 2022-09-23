@@ -19,7 +19,7 @@ mkl-service==2.3.0
 mock==3.0.5
 numpy==1.22.0
 Pillow==9.0.1
-protobuf==3.15.0
+protobuf==3.18.3
 pygpu==0.7.6
 pyreadline==2.1
 PyYAML==5.4
